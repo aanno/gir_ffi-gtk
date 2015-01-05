@@ -8,12 +8,17 @@
   $Id: window.rb,v 1.9 2006/10/21 16:58:00 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
-window = Gtk::Window.new("Gtk::Window sample")
+window = Gtk::Window.new(:toplevel)
+window.name = "Gtk::Window sample"
 window.signal_connect("destroy"){Gtk.main_quit}
 
-button = Gtk::Button.new(:label => "Hello World")
+# TODO: Unsupported Hash/Map constructor
+#button = Gtk::Button.new(:label => "Hello World")
+button = Gtk::Button.new_with_label("Hello World")
 button.signal_connect("clicked") do
   puts "hello world"
   Gtk.main_quit

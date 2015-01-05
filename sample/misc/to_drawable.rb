@@ -8,7 +8,9 @@
   $Id: to_drawable.rb,v 1.6 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
 filename = ARGV[0]
 unless filename

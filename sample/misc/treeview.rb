@@ -8,11 +8,15 @@
   $Id: treeview.rb,v 1.8 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
-window = Gtk::Window.new("Gtk::TreeView sample")
+window = Gtk::Window.new(:toplevel)
+window.name = "Gtk::TreeView sample"
 
 # Create data
+# TODO: Pixbuf
 model = Gtk::TreeStore.new(String, String, Gdk::Color, Float, Gdk::Pixbuf)
 
 # column 1

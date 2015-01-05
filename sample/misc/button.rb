@@ -8,9 +8,12 @@
   $Id: button.rb,v 1.10 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
-window = Gtk::Window.new("buttons")
+window = Gtk::Window.new(:toplevel)
+window.title = "buttons"
 window.border_width = 0
 
 box1 = Gtk::Box.new(:vertical, 0)
@@ -18,13 +21,14 @@ window.add(box1)
 
 table = Gtk::Table.new(3, 3, false)
 table.set_row_spacings(5)
-table.set_column_spacings(5)
+# TODO: set_column_spacings does not work
+#table.set_column_spacings(5)
 table.set_border_width(10)
 box1.pack_start(table, true, true, 0)
 
 button = []
 0.upto(8) do |i|
-  button.push Gtk::Button.new(:label => "button"+(i+1).to_s)
+  button.push Gtk::Button.new_with_label("button"+(i+1).to_s)
 end
 0.upto(8) do |i|
   button[i].signal_connect("clicked") do |w|
@@ -38,15 +42,19 @@ end
   end
   button[i].show
 end
-table.attach(button[0], 0, 1, 0, 1, nil, nil, 0, 0)
-table.attach(button[1], 1, 2, 1, 2, nil, nil, 0, 0)
-table.attach(button[2], 2, 3, 2, 3, nil, nil, 0, 0)
-table.attach(button[3], 0, 1, 2, 3, nil, nil, 0, 0)
-table.attach(button[4], 2, 3, 0, 1, nil, nil, 0, 0)
-table.attach(button[5], 1, 2, 2, 3, nil, nil, 0, 0)
-table.attach(button[6], 1, 2, 0, 1, nil, nil, 0, 0)
-table.attach(button[7], 2, 3, 1, 2, nil, nil, 0, 0)
-table.attach(button[8], 0, 1, 1, 2, nil, nil, 0, 0)
+# https://developer.gnome.org/gtk3/stable/GtkTable.html#GtkAttachOptions
+# :expand, :shrink, :fill
+# TODO: should nil be escaped with one of the 3 values above?
+table.attach(button[0], 0, 1, 0, 1, :fill, :fill, 0, 0)
+table.attach(button[0], 0, 1, 0, 1, :fill, :fill, 0, 0)
+table.attach(button[1], 1, 2, 1, 2, :fill, :fill, 0, 0)
+table.attach(button[2], 2, 3, 2, 3, :fill, :fill, 0, 0)
+table.attach(button[3], 0, 1, 2, 3, :fill, :fill, 0, 0)
+table.attach(button[4], 2, 3, 0, 1, :fill, :fill, 0, 0)
+table.attach(button[5], 1, 2, 2, 3, :fill, :fill, 0, 0)
+table.attach(button[6], 1, 2, 0, 1, :fill, :fill, 0, 0)
+table.attach(button[7], 2, 3, 1, 2, :fill, :fill, 0, 0)
+table.attach(button[8], 0, 1, 1, 2, :fill, :fill, 0, 0)
 
 separator = Gtk::Separator.new(:vertical)
 box1.pack_start(separator, false, true, 0)
@@ -55,7 +63,7 @@ box2 = Gtk::Box.new(:vertical, 10)
 box2.border_width = 10
 box1.pack_start(box2, false, true, 0)
 
-close = Gtk::Button.new(:label => "close")
+close = Gtk::Button.new_with_label("close")
 close.signal_connect("clicked") do
   Gtk.main_quit
 end
@@ -67,3 +75,4 @@ close.grab_default
 window.show_all
 
 Gtk.main
+

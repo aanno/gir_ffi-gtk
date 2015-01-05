@@ -25,8 +25,12 @@ Usage:
     "back_space" : same as pressing <backspace> in text view area.
     "cancel j/k" : disable 'j' and 'k' binding
 =end
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+# TODO: inheritance does not work
+# TODO: hence, type_register and binding_set are unknown
 class Pager < Gtk::TextView
   type_register
   

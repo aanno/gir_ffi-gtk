@@ -12,20 +12,26 @@ require 'gir_ffi-gtk3'
 # always needed
 Gtk.init
 
+GirFFI.setup :Gdk
+GirFFI.setup :GdkPixbuf
+
 window = Gtk::Window.new(:toplevel)
 window.name = "Gtk::TreeView sample"
 
 # Create data
 # TODO: Pixbuf
-model = Gtk::TreeStore.new(String, String, Gdk::Color, Float, Gdk::Pixbuf)
+#model = Gtk::TreeStore.new(String, String, Gdk::Color, Float, Gdk::Pixbuf)
+model = Gtk::TreeStore.new [ 101 ]
 
 # column 1
-root_iter = model.append(nil)
+# TODO: append nil
+#root_iter = model.append(nil)
+root_iter = model.append("")
 root_iter[0] = "Root"
 root_iter[1] = "red"
 root_iter[2] = Gdk::Color.new(0, 65535, 0)
 root_iter[3] = 5.0
- 
+
 # column 2
 root_iter[4] = window.render_icon_pixbuf(Gtk::Stock::NEW, Gtk::IconSize::IconSize::DIALOG)
 

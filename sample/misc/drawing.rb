@@ -7,8 +7,11 @@
   $Id: drawing.rb,v 1.7 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+# TODO: inheritance
 class Canvas < Gtk::DrawingArea
   def initialize
     super
@@ -52,6 +55,7 @@ class Canvas < Gtk::DrawingArea
   end
 end
 
+# TODO: inheritance
 class A < Canvas
   def initialize
     super
@@ -80,7 +84,8 @@ class A < Canvas
   end
 end
 
-window = Gtk::Window.new("drawing test")
+window = Gtk::Window.new :toplevel
+window.name = "drawing test"
 window.signal_connect("destroy") { Gtk.main_quit }
 
 canvas = A.new

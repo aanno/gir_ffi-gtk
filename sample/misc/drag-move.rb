@@ -9,8 +9,11 @@
   $Id: drag-move.rb,v 1.2 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require "gtk3-gi"
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+# TODO: inheritance
 class DraggableWidget < Gtk::EventBox
   def initialize
     super
@@ -109,10 +112,11 @@ class DraggableWidget < Gtk::EventBox
   end
 end
 
-window = Gtk::Window.new("Draggable Widget sample")
+window = Gtk::Window.new :toplevel
+window.name = "Draggable Widget sample"
 window.signal_connect("destroy") {Gtk.main_quit}
 
-layout = Gtk::Layout.new
+layout = Gtk::Layout.new nil, nil
 
 draggable_widget = DraggableWidget.new
 draggable_widget.set_size_request(50, 50)

@@ -8,10 +8,13 @@
   $Id: dialog.rb,v 1.6 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
-window = Gtk::Window.new("Gtk::Dialog sample")
-button = Gtk::Button.new("Create Dialog")
+window = Gtk::Window.new :toplevel
+window.name = "Gtk::Dialog sample"
+button = Gtk::Button.new_with_label("Create Dialog")
 button.signal_connect("clicked") do 
   dialog = Gtk::Dialog.new
   dialog.title = "Gtk::Dialog Sample"
@@ -39,6 +42,10 @@ button.signal_connect("clicked") do
   dialog.show_all
 end
 
-window.add(button).show_all.signal_connect("destroy"){Gtk.main_quit}
+# TODO: method chaining
+# window.add(button).show_all.signal_connect("destroy"){Gtk.main_quit}
+window.add(button)
+window.show_all
+window.signal_connect("destroy"){ Gtk.main_quit }
 
 Gtk.main

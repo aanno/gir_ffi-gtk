@@ -10,22 +10,28 @@
   $Id: itemfactory.rb,v 1.7 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
 puts "Deprecated. Use Gtk::UIManager instead."
 
-window = Gtk::Window.new("Gtk::ItemFactory")
+window = Gtk::Window.new :toplevel
+window.name = "Gtk::ItemFactory"
 window.signal_connect("destroy") do
   Gtk.main_quit
 end
-window.signal_connect("delete_event") do
+window.signal_connect("delete-event") do
   Gtk.main_quit
 end
 
 accelgroup = Gtk::AccelGroup.new
 window.add_accel_group(accelgroup)
 
-ifp = Gtk::ItemFactory.new(Gtk::ItemFactory::TYPE_MENU_BAR, "<main>", accelgroup)
+# ItemFactory -> UIManager
+# ifp = Gtk::ItemFactory.new(Gtk::ItemFactory::TYPE_MENU_BAR, "<main>", accelgroup)
+ifp = Gtk::UIManager.new
+#(:menu_bar, "<main>", accelgroup)
 
 cal_stock = Proc.new {|d, item| p "StockItem, #{d}"}
 cal_quit = Proc.new{p "Quit"; Gtk.main_quit}

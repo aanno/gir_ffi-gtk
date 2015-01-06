@@ -8,7 +8,9 @@
   $Id: iconview.rb,v 1.2 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
 TEXT_COLUMN   = 0
 PIXBUF_COLUMN = 1

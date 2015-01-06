@@ -14,19 +14,22 @@
   $Id: alpha-demo.rb,v 1.1 2007/01/06 03:55:44 ktou Exp $
 =end
 
-require 'gtk3'
-require 'cairo'
+require 'gir_ffi-gtk3'
+require 'gir_ffi-cairo'
+# always needed
+Gtk.init
 
+# TODO: inheritance
 class AlphaDemo < Gtk::Window
 
-  def initialize()
-    super()
+  def initialize
+    super
 
     set_app_paintable(true)
     set_title("AlphaDemo")
     set_decorated(false)
     set_default_size(200, 220)
-    signal_connect("delete_event") do
+    signal_connect('delete-event') do
       Gtk.main_quit
     end
     set_double_buffered(false)
@@ -64,7 +67,8 @@ class AlphaDemo < Gtk::Window
   end
 end
 
-alpha = AlphaDemo.new
+alpha = AlphaDemo.new :toplevel
 alpha.show
 
-Gtk.main()
+Gtk.main
+

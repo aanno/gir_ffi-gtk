@@ -8,14 +8,30 @@
   $Id: filechooser.rb,v 1.5 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require "gtk3"
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+# TODO: hash contructor needed?
+=begin
 dialog =  Gtk::FileChooserDialog.new(:title => "Gtk::FileChooser sample", 
 				     :action => Gtk::FileChooser::Action::OPEN,                                 
 				     :buttons => [[Gtk::Stock::OPEN, Gtk::Dialog::ResponseType::ACCEPT],
 				     [Gtk::Stock::CANCEL, Gtk::Dialog::ResponseType::CANCEL]])
+=end
 
+dialog = Gtk::FileChooserDialog.new
+dialog.title = "Gtk::FileChooser sample"
+#dialog.action = Gtk::FileChooser::Action::OPEN
+dialog.action = :open
+#dialog.buttons = [[Gtk::Stock::OPEN, Gtk::Dialog::ResponseType::ACCEPT],
+#             [Gtk::Stock::CANCEL, Gtk::Dialog::ResponseType::CANCEL]]
+
+# TODO: hash constructor needed?
+=begin
 extra_button = Gtk::Button.new(:label => "Extra button")
+=end
+extra_button = Gtk::Button.new_with_label "Extra button"
 extra_button.signal_connect("clicked") do
   puts "extra button is clicked"
 end

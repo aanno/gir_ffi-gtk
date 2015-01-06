@@ -10,11 +10,15 @@
   $Id: cairo-pong.rb,v 1.3 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require "gtk3-gi"
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+=begin
 unless Gdk.cairo_available?
   raise "GTK+ 2.8.0 or later and cairo support are required."
 end
+=end
 
 module Pong
   class CenteredItem
@@ -166,6 +170,7 @@ module Pong
     end
   end
 
+  # TODO: inheritance
   class Window < Gtk::Window
     def initialize(speed=30)
       super()
@@ -213,5 +218,5 @@ module Pong
   end
 end
 
-Pong::Window.new.show_all
+Pong::Window.new(:toplevel).show_all
 Gtk.main

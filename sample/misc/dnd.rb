@@ -8,11 +8,15 @@
   $Id: dnd.rb,v 1.9 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require "gtk3-gi"
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+# TODO: inheritance
 class SrcWindow < Gtk::Window
   def initialize
-    super("Source Window")
+    super
+    self.name = "Source Window"
     @label = Gtk::Label.new("Drag here!")
     add(@label)
     set_default_size(100, 100)
@@ -55,8 +59,8 @@ class DestWindow < Gtk::Window
   end
 end
 
-win1 = SrcWindow.new
-win2 = DestWindow.new
+win1 = SrcWindow.new :toplevel
+win2 = DestWindow.new :toplevel
 
 win1.show_all.signal_connect("destroy") {Gtk.main_quit}
 win2.show_all.signal_connect("destroy") {Gtk.main_quit}

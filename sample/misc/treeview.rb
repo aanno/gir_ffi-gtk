@@ -21,41 +21,44 @@ window.name = "Gtk::TreeView sample"
 # Create data
 # TODO: Pixbuf
 #model = Gtk::TreeStore.new(String, String, Gdk::Color, Float, Gdk::Pixbuf)
-model = Gtk::TreeStore.new [ 101 ]
+# https://developer.gnome.org/gobject/unstable/gobject-Type-Information.html#G-TYPE-FLOAT:CAPS
+model = Gtk::TreeStore.new [ 16, 16 ]
 
 # column 1
-# TODO: append nil
-#root_iter = model.append(nil)
-root_iter = model.append("")
-root_iter[0] = "Root"
-root_iter[1] = "red"
-root_iter[2] = Gdk::Color.new(0, 65535, 0)
-root_iter[3] = 5.0
+root_iter = model.append(nil)
+# TODO: GtkTreeIter
+root_iter.stamp=1
+#root_iter.user_data = ["Root", "red", Gdk::Color.new(0, 65535, 0), 5.0 ]
+#root_iter[0] = "Root"
+#root_iter[1] = "red"
+#root_iter[2] = Gdk::Color.new(0, 65535, 0)
+#root_iter[3] = 5.0
 
 # column 2
-root_iter[4] = window.render_icon_pixbuf(Gtk::Stock::NEW, Gtk::IconSize::IconSize::DIALOG)
+#root_iter[4] = window.render_icon_pixbuf(Gtk::Stock::NEW, Gtk::IconSize::IconSize::DIALOG)
 
 child_iter1 = model.append(root_iter)
-child_iter1[0] = "Child_Iter1"
-child_iter1[1] = "green"
-child_iter1[2] = Gdk::Color.new(65535, 0, 0)
-child_iter1[3] = 3.0
+#child_iter1[0] = "Child_Iter1"
+#child_iter1[1] = "green"
+#child_iter1[2] = Gdk::Color.new(65535, 0, 0)
+#child_iter1[3] = 3.0
 
 # column 2
-child_iter1[4] = window.render_icon_pixbuf(Gtk::Stock::OPEN, Gtk::IconSize::IconSize::MENU)
+#child_iter1[4] = window.render_icon_pixbuf(Gtk::Stock::OPEN, Gtk::IconSize::IconSize::MENU)
 
 child_iter2 = model.append(root_iter)
-child_iter2[0] = "Child_Iter2"
-child_iter2[1] = "yellow"
-child_iter2[2] = Gdk::Color.new(0, 0, 65535)
-child_iter2[3] = 0.9
+#child_iter2[0] = "Child_Iter2"
+#child_iter2[1] = "yellow"
+#child_iter2[2] = Gdk::Color.new(0, 0, 65535)
+#child_iter2[3] = 0.9
 
 # column 2
-child_iter2[4] = window.render_icon_pixbuf(Gtk::Stock::QUIT, Gtk::IconSize::IconSize::BUTTON)
+#child_iter2[4] = window.render_icon_pixbuf(Gtk::Stock::QUIT, Gtk::IconSize::IconSize::BUTTON)
 
 
 # Create view
-tv = Gtk::TreeView.new(model)
+tv = Gtk::TreeView.new
+tv.set_model model
 
 # column 1
 renderer = Gtk::CellRendererText.new

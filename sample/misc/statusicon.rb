@@ -10,13 +10,17 @@
   $Id: statusicon.rb,v 1.1 2006/11/17 18:12:41 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+=begin
 if str = Gtk.check_version(2, 10, 0)
   puts "This sample requires GTK+ 2.10.0 or later"
   puts str
   exit
 end
+=end
 
 class StatusIconSample < Gtk::StatusIcon
   STATUS_INFO = 0
@@ -27,7 +31,7 @@ class StatusIconSample < Gtk::StatusIcon
     @status = STATUS_INFO
     update_icon
 
-    set_blinking(true)
+    # set_blinking(true)
     signal_connect("activate"){
       icon_activated
     }
@@ -54,12 +58,15 @@ class StatusIconSample < Gtk::StatusIcon
   end
 
   def update_icon
+    # TODO: set_icon_name, set_tooltip
     if @status == STATUS_INFO
-      set_icon_name(Gtk::Stock::DIALOG_INFO)
-      set_tooltip("Some Information ...")
+      # set_icon_name(Gtk::Stock::DIALOG_INFO)
+      # set_icon_name(:DIALOG_INFO)
+      # set_tooltip("Some Information ...")
     else
-      set_icon_name(Gtk::Stock::DIALOG_QUESTION)
-      set_tooltip("Some Question ...")
+      # set_icon_name(Gtk::Stock::DIALOG_QUESTION)
+      # set_icon_name(:DIALOG_QUESTION)
+      # set_tooltip("Some Question ...")
     end
   end
 

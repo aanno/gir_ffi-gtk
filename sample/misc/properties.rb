@@ -11,10 +11,13 @@
   $Id: properties.rb,v 1.3 2006/06/17 13:18:12 mutoh Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
 class MyButton < Gtk::Button
-  type_register
+  # TODO: type_register
+  # type_register
 
   def initialize(label = nil)
     # XXX: 
@@ -25,6 +28,10 @@ class MyButton < Gtk::Button
     @hoge = 0
   end
 
+  # TODO: 
+  # see http://stackoverflow.com/questions/14840456/purpose-of-gvalue-gtypevaluetable-gtypeinfo-and-gparamspec
+  # to make sense of this
+  
   # define new property "fuga"
   install_property(GLib::Param::Int.new("fuga", # name
                                         "Fuga", # nick

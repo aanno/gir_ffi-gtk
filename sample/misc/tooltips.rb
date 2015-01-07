@@ -9,13 +9,17 @@
   $Id: tooltips.rb,v 1.1 2007/07/10 13:17:34 ggc Exp $
 =end
 
-require 'gtk3'
+require 'gir_ffi-gtk3'
+# always needed
+Gtk.init
 
+=begin
 if str = Gtk.check_version(2, 12, 0)
     puts "This sample requires GTK+ 2.12.0 or later"
     puts str
     exit
 end
+=end
 
 def treeview_query_tooltip(treeview, keyboard_tip, x, y, tooltip)
     if keyboard_tip
@@ -41,7 +45,8 @@ def textview_query_tooltip(textview, keyboard_tip, x, y, tooltip, tag)
     if keyboard_tip
         iter = textview.buffer.get_iter_at_offset(textview.buffer.cursor_position)
     else
-        bx, by = textview.window_to_buffer_coords(Gtk::TextView::WINDOW_TEXT, x, y)
+        # bx, by = textview.window_to_buffer_coords(Gtk::TextView::WINDOW_TEXT, x, y)
+        bx, by = textview.window_to_buffer_coords(:window_text, x, y)
         iter, = textview.get_iter_at_position(bx, by)
     end
     if iter.has_tag?(tag)
@@ -67,7 +72,7 @@ end
 
 Gtk.init
 
-window = Gtk::Window.new(Gtk::Window::TOPLEVEL)
+window = Gtk::Window.new :toplevel
 window.title = 'Tooltips test'
 window.border_width = 10
 window.signal_connect('delete-event') { Gtk.main_quit }
@@ -76,7 +81,7 @@ box = Gtk::VBox.new(false, 3)
 window.add(box)
 
 # A check button using the tooltip-markup property
-button = Gtk::CheckButton.new('This one uses the tooltip-markup property')
+button = Gtk::CheckButton.new_with_label 'This one uses the tooltip-markup property'
 button.tooltip_text = 'Hello, I am a static tooltip.'
 box.pack_start(button, false, false, 0)
 
@@ -84,11 +89,12 @@ raise if button.tooltip_text != 'Hello, I am a static tooltip.'
 raise if button.tooltip_markup != 'Hello, I am a static tooltip.'
 
 # A check button using the query-tooltip signal
-button = Gtk::CheckButton.new('I use the query-tooltip signal')
+button = Gtk::CheckButton.new_with_label 'I use the query-tooltip signal'
 button.has_tooltip = true
 button.signal_connect('query-tooltip') { |widget, x, y, keyboard_tip, tooltip|
     tooltip.markup = widget.label
-    tooltip.set_icon_from_stock(Gtk::Stock::DELETE, Gtk::IconSize::MENU)
+    # tooltip.set_icon_from_stock(Gtk::Stock::DELETE, Gtk::IconSize::MENU)
+    tooltip.set_icon_from_stock(:delete, :menu)
     true
 }
 box.pack_start(button, false, false, 0)
@@ -112,35 +118,39 @@ raise if label.tooltip_text != 'Another Label tooltip'
 raise if label.tooltip_markup != '<b>Another</b> Label tooltip'
 
 # Another one, with a custom tooltip window
-button = Gtk::CheckButton.new('This one has a custom tooltip window!')
+button = Gtk::CheckButton.new_with_label('This one has a custom tooltip window!')
 box.pack_start(button, false, false, 0)
 
-tooltip_window = Gtk::Window.new(Gtk::Window::POPUP)
+tooltip_window = Gtk::Window.new :popup
 tooltip_button = Gtk::Label.new('blaat!')
 tooltip_window.add(tooltip_button)
 tooltip_button.show
 
 button.tooltip_window = tooltip_window
 button.signal_connect('query-tooltip') { |widget, x, y, keyboard_tip, tooltip|
-    widget.tooltip_window.modify_bg(Gtk::StateType::NORMAL, Gdk::Color.new(0, 65535, 0))
+    # widget.tooltip_window.modify_bg(Gtk::StateType::NORMAL, Gdk::Color.new(0, 65535, 0))
+    widget.tooltip_window.modify_bg(:normal, Gdk::Color.new(0, 65535, 0))
     true
 }
 button.has_tooltip = true
 
 # An insensitive button
-button = Gtk::Button.new('This one is insensitive')
+button = Gtk::Button.new_with_label('This one is insensitive')
 button.sensitive = false
 button.tooltip_text = 'Insensitive!'
 box.pack_start(button, false, false, 0)
 
 # Tree view
-store = Gtk::TreeStore.new(String)
-iter = store.insert(nil, 0, ['File Manager'])
-iter = store.insert(nil, 0, ['Gossip'])
-iter = store.insert(nil, 0, ['System Settings'])
-iter = store.insert(nil, 0, ['The GIMP'])
-iter = store.insert(nil, 0, ['Terminal'])
-iter = store.insert(nil, 0, ['Word Processor'])
+# TODO: TreeStore constants, TreeStore use
+#store = Gtk::TreeStore.new(String)
+store = Gtk::TreeStore.new([16])
+#iter = store.insert(nil, 0, ['File Manager'])
+iter = store.insert(nil, 0)
+#iter = store.insert(nil, 0, ['Gossip'])
+#iter = store.insert(nil, 0, ['System Settings'])
+#iter = store.insert(nil, 0, ['The GIMP'])
+#iter = store.insert(nil, 0, ['Terminal'])
+#iter = store.insert(nil, 0, ['Word Processor'])
 treeview = Gtk::TreeView.new(store)
 treeview.set_size_request(200, 240)
 treeview.append_column(Gtk::TreeViewColumn.new('Test', Gtk::CellRendererText.new, { :text => 0 }))

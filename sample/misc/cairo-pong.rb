@@ -172,13 +172,16 @@ module Pong
 
   # TODO: inheritance
   class Window < Gtk::Window
+    
     def initialize(speed=30)
       super()
       @speed = speed
-
+    end
+    
+    def init2 
       self.title = "Pong Demonstration"
       signal_connect("destroy") { Gtk.main_quit }
-      signal_connect("key_press_event") do |widget, event|
+      signal_connect("key-press-event") do |widget, event|
         if event.state.control_mask? and event.keyval == Gdk::Keyval::GDK_q
           destroy
           true
@@ -196,16 +199,27 @@ module Pong
 
       vb = Gtk::Box.new(:vertical, 5)
       vb.border_width = 10
-      vb.pack_start(@drawing_area, :expand  => true,
-                                   :fill    => true,
-                                   :padding => 0)
+      #vb.pack_start(@drawing_area, :expand  => true,
+      #                             :fill    => true,
+      #                             :padding => 0)
+      vb.pack_start @drawing_area, true, true, 0
       vb.show_all
       add(vb)
 
+=begin
       GLib::Timeout.add(@speed) do
         @field.update
         @drawing_area.queue_draw unless @drawing_area.destroyed?
       end
+=end
+    
+      myproc = proc {
+        @field.update
+        @drawing_area.queue_draw unless @drawing_area.destroyed?
+      }
+      
+      GLib.timeout_add(GLib::PRIORITY_DEFAULT, @speed, myproc, nil, nil)
+
     end
 
     def set_draw
@@ -218,5 +232,8 @@ module Pong
   end
 end
 
-Pong::Window.new(:toplevel).show_all
+w = Pong::Window.new(:toplevel)
+# as self.title does not work in constructor...
+w.init2
+w.show_all
 Gtk.main

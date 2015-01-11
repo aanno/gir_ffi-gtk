@@ -48,7 +48,12 @@ class Canvas < Gtk::DrawingArea
     end
   end
 
+  # w: Gdk::DrawingArea
+  # w.window: ???
+  # e: Gdk::EventConfigure
   def configure_event(w,e)
+    # TODO: remove ww again (after debugging)
+    ww = w.window
     g = w.window.geometry
     if (g[2] > 0 && g[3] > 0)
       # TODO: Gdk::Pixmap has been replaced by cairo surfaces

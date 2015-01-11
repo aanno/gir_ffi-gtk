@@ -12,22 +12,33 @@ require 'gir_ffi-gtk3'
 # always needed
 Gtk.init
 
+# TODO: real Pixbuf support
+GirFFI.setup :Gdk
+GirFFI.setup :GdkPixbuf
+
 filename = ARGV[0]
 unless filename
   puts "ruby #{$0} filename"
   exit(1)
 end
 
-pixbuf = Gdk::Pixbuf.new(filename)
+# pixbuf = Gdk::Pixbuf.new(filename)
+pixbuf = GdkPixbuf::Pixbuf.new_from_file(filename)
 
-w = Gtk::Window.new("Drawable sample")
+w = Gtk::Window.new :toplevel
+w.title = "Drawable sample"
 w.realize
 w.signal_connect('delete-event') do
   Gtk.main_quit
 end
 
 d = Gtk::DrawingArea.new
-gc = Gdk::GC.new(w.window)
+# TODO: Gdk:GC
+# gc = Gdk::GC.new(w.window)
+
+# d: Gtk::DrawingArea
+# w: Gtk::DrawingArea
+# e: Cairo::Context
 d.signal_connect('draw') do |w, e|
   unless e.count > 0
     width = w.allocation.width
@@ -38,6 +49,7 @@ d.signal_connect('draw') do |w, e|
   end
   true
 end
+
 w.add(d)
 w.show_all
 

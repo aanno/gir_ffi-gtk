@@ -11,6 +11,7 @@ require 'gir_ffi-gtk3'
 # always needed
 Gtk.init
 
+# TODO: real Pixbuf support
 GirFFI.setup :Gdk
 GirFFI.setup :GdkPixbuf
 

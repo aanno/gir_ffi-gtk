@@ -11,14 +11,22 @@ require 'gir_ffi-gtk3'
 # always needed
 Gtk.init
 
+# TODO: real Pixbuf support
+GirFFI.setup :Gdk
+GirFFI.setup :GdkPixbuf
+
 # TODO: inheritance
 class Canvas < Gtk::DrawingArea
+  
   def initialize
     super
-    signal_connect("draw") { |w,e| expose_event(w,e) }
-    signal_connect("configure_event") { |w, e| configure_event(w,e) }
     @buffer = nil
     @bgc = nil
+  end
+  
+  def init2
+    signal_connect("draw") { |w,e| expose_event(w,e) }
+    signal_connect("configure-event") { |w, e| configure_event(w,e) }
   end
 
   def expose_event(w,e)
@@ -43,11 +51,14 @@ class Canvas < Gtk::DrawingArea
   def configure_event(w,e)
     g = w.window.geometry
     if (g[2] > 0 && g[3] > 0)
-      b = Gdk::Pixmap::new(w.window, g[2], g[3], -1)
+      # TODO: Gdk::Pixmap has been replaced by cairo surfaces
+      # see https://developer.gnome.org/gtk3/stable/ch25s02.html#id-1.6.3.4.5
+      # b = Gdk::Pixmap::new(w.window, g[2], g[3], -1)
+      b = GdkPixbuf::Pixbuf.new(w.window, g[2], g[3], -1)
       clear(b)
       if not @buffer.nil?
-	g = @buffer.size
-	b.draw_drawable(@bgc, @buffer, 0, 0, 0, 0, g[0], g[1])
+        g = @buffer.size
+        b.draw_drawable(@bgc, @buffer, 0, 0, 0, 0, g[0], g[1])
       end
       @buffer = b
     end
@@ -57,10 +68,17 @@ end
 
 # TODO: inheritance
 class A < Canvas
+  
   def initialize
     super
-    signal_connect("button_press_event") { |w,e| pressed(w,e) }
-    set_events(Gdk::Event::BUTTON_PRESS_MASK)
+  end
+    
+  def init2
+    super   
+    signal_connect("button-press-event") { |w,e| pressed(w,e) }
+    # TODO: set_events
+    # set_events(Gdk::Event::BUTTON_PRESS_MASK)
+    # set_events(:button_press_mask)
   end
 
   def pressed(widget, ev)
@@ -70,12 +88,12 @@ class A < Canvas
 
       x1,x2 = if (@last.x < ev.x)
 	      then [@last.x, ev.x]
-	      else [ev.x,    @last.x]
+	      else [ev.x, @last.x]
 	      end
       y1,y2 = if (@last.y < ev.y)
-	    then [@last.y, ev.y]
-	    else [ev.y,    @last.y]
-	    end
+  	    then [@last.y, ev.y]
+	      else [ev.y, @last.y]
+	      end
       widget.queue_draw_area(x1, y1, x2 - x1 + 1, y2 - y1 + 1)
     end
     @last = nil
@@ -89,6 +107,8 @@ window.name = "drawing test"
 window.signal_connect("destroy") { Gtk.main_quit }
 
 canvas = A.new
+# TODO: Avoid init2 for inheritance
+canvas.init2
 window.add(canvas)
 
 window.show_all

@@ -7,7 +7,18 @@
   $Id: drawing.rb,v 1.7 2006/06/17 13:18:12 mutoh Exp $
 =end
 
+# some background:
+# gtk3 drawing: https://developer.gnome.org/gtk3/stable/chap-drawing-model.html
+# cairo drawing: http://zetcode.com/gfx/cairo/basicdrawing/
+#
+# GtkDrawingArea: https://developer.gnome.org/gtk3/stable/GtkDrawingArea.html
+# cairo_surface_t: http://www.cairographics.org/manual/cairo-cairo-surface-t.html 
+#
+# C-Example:
+# https://developer.gnome.org/gtk3/stable/ch01s03.html
+
 require 'gir_ffi-gtk3'
+require 'gir_ffi-cairo'
 # always needed
 Gtk.init
 
@@ -26,7 +37,8 @@ class Canvas < Gtk::DrawingArea
   
   def init2
     signal_connect("draw") { |w,e| expose_event(w,e) }
-    signal_connect("configure-event") { |w, e| configure_event(w,e) }
+    # TODO: 
+    # signal_connect("configure-event") { |w, e| configure_event(w,e) }
   end
 
   def expose_event(w,e)
@@ -59,7 +71,7 @@ class Canvas < Gtk::DrawingArea
       # TODO: Gdk::Pixmap has been replaced by cairo surfaces
       # see https://developer.gnome.org/gtk3/stable/ch25s02.html#id-1.6.3.4.5
       # b = Gdk::Pixmap::new(w.window, g[2], g[3], -1)
-      b = GdkPixbuf::Pixbuf.new(w.window, g[2], g[3], -1)
+      b = w.window.create_similiar(w.window, -1, g[2], g[3])
       clear(b)
       if not @buffer.nil?
         g = @buffer.size
@@ -80,7 +92,9 @@ class A < Canvas
     
   def init2
     super   
-    signal_connect("button-press-event") { |w,e| pressed(w,e) }
+    signal_connect("button-press-event") { 
+      |w,e| pressed(w,e) 
+    }
     # TODO: set_events
     # set_events(Gdk::Event::BUTTON_PRESS_MASK)
     # set_events(:button_press_mask)

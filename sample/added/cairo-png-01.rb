@@ -4,7 +4,7 @@
 # http://zetcode.com/gfx/cairo/cairobackends/
 # by Jan Bodnar
 #
-# Adapted to Ruby and gir_ffi-gtk by Thomas Pasch. 
+# Adapted to Ruby and gir_ffi-cairo by Thomas Pasch. 
 
 require 'gir_ffi-cairo'
 

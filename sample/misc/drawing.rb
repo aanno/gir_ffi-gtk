@@ -16,6 +16,11 @@
 #
 # C-Example:
 # https://developer.gnome.org/gtk3/stable/ch01s03.html
+# http://www.gtkforums.com/viewtopic.php?f=3&t=988&p=195286=Drawing%20with%20Cairo%20in%20GTK3#p195286
+# http://zetcode.com/gfx/cairo/basicdrawing/
+#
+# Advanced:
+# http://stackoverflow.com/questions/2172525/why-is-my-simple-python-gtkcairo-program-running-so-slowly-stutteringly
 
 require 'gir_ffi-gtk3'
 require 'gir_ffi-cairo'
@@ -41,12 +46,14 @@ class Canvas < Gtk::DrawingArea
     # signal_connect("configure-event") { |w, e| configure_event(w,e) }
   end
 
+  # w: GtkDrawingArea
+  # e: CairoContext
   def expose_event(w,e)
-    unless @buffer.nil?
+    #unless @buffer.nil?
       rec = e.area
       w.window.draw_drawable(@bgc, @buffer, rec.x, rec.y,
 			   rec.x, rec.y, rec.width, rec.height)
-    end
+    #end
     false
   end
 

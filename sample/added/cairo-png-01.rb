@@ -9,7 +9,7 @@
 require 'gir_ffi-cairo'
 
 # surface = Cairo::ImageSurface.create Cairo::Format::CAIRO_FORMAT_ARGB32, 390, 60
-surface = Cairo::ImageSurface.create 0, 390, 60
+surface = Cairo::ImageSurface.create :argb32, 390, 60
 # cr = Cairo::Context.create surface
 cr = Cairo::Context.create surface
 

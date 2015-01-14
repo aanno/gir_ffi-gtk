@@ -3,3 +3,4 @@ gir_ffi-gtk*.gem
 .project
 /tmp
 /coverage
+/sample/added/cairo-png-01.png

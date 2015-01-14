@@ -1,5 +1,5 @@
+##
 # Minimal Cairo PNG drawing.
-#
 # Based on:
 # http://zetcode.com/gfx/cairo/cairobackends/
 # by Jan Bodnar
@@ -15,13 +15,15 @@ cr = Cairo::Context.create surface
 
 puts "cr=", cr, "surface=", surface
 
-cr.set_source_rgb 0, 0, 0
-cr.select_font_face "Sans", 0, 0
+#cr.set_source_rgb 0, 0, 0
+#cr.select_font_face "Sans", 0, 0
 cr.set_font_size 40.0
 
 cr.move_to 10.0, 50.0
 cr.show_text "Disziplin ist Macht."
 
-cr.surface_write_to_png surface, "cairo-png-01 cairo-png-01"
+surface.write_to_png "cairo-png-01.png"
 cr.destroy 
-surface.cairo_surface_destroy
+surface.surface_destroy
+
+puts "finished"

@@ -91,33 +91,34 @@ window.signal_connect("destroy") {
 da = Gtk::DrawingArea.new 
 da.set_size_request 300, 300
 da.signal_connect("draw") { |area, cairo_context, data|
+                            
   # Set color for background
-  cairo_context.set_source_rgb 1, 1, 1 
+  cairo_context.set_source_rgb 1.0, 1.0, 1.0 
   # fill in the background color
   cairo_context.paint
      
   # set color for rectangle
-  cairo_context.cairo_set_source_rgb 0.42, 0.65, 0.80
+  cairo_context.set_source_rgb 0.42, 0.65, 0.80
   # set the line width
-  cairo_context.cairo_set_line_width 6
+  cairo_context.set_line_width 6.0
   # draw the rectangle's path beginning at 3,3
-  cairo_context.cairo_rectangle 3, 3, 100, 100
+  cairo_context.rectangle 3.0, 3.0, 100.0, 100.0
   # stroke the rectangle's path with the chosen color so it's actually visible
-  cairo_context.cairo_stroke
+  cairo_context.stroke
 
   # draw circle
-  cairo_context.cairo_set_source_rgb 0.17, 0.63, 0.12
-  cairo_context.cairo_set_line_width 2
+  cairo_context.set_source_rgb 0.17, 0.63, 0.12
+  cairo_context.set_line_width 2.0
   # cairo_context.cairo_arc 150, 210, 20, 0, 2*G_PI
-  cairo_context.cairo_arc 150, 210, 20, 0, 2 * 3.1415
-  cairo_context.cairo_stroke
+  cairo_context.arc 150.0, 210.0, 20.0, 0.0, 2 * 3.1415
+  cairo_context.stroke
 
   # draw horizontal line
-  cairo_context.cairo_set_source_rgb 0.77, 0.16, 0.13
-  cairo_context.cairo_set_line_width 6
-  cairo_context.cairo_move_to 80,160
-  cairo_context.cairo_line_to 200, 160
-  cairo_context.cairo_stroke
+  cairo_context.set_source_rgb 0.77, 0.16, 0.13
+  cairo_context.set_line_width 6.0
+  cairo_context.move_to 80.0, 160.0
+  cairo_context.line_to 200.0, 160.0
+  cairo_context.stroke
 
   false
 }
